@@ -1,53 +1,77 @@
+import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
 import './App.css';
+import HomePage from './pages/HomePage';
+import UsersPage from './pages/UsersPage';
+import TeamsPage from './pages/TeamsPage';
+import ActivitiesPage from './pages/ActivitiesPage';
+import WorkoutsPage from './pages/WorkoutsPage';
+import LeaderboardPage from './pages/LeaderboardPage';
+import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
-  const apiBase = process.env.REACT_APP_API_URL || 'http://localhost:8000';
-
   return (
-    <div className="container py-5">
-      <div className="row justify-content-center">
-        <div className="col-md-10">
-          <div className="card shadow-sm">
-            <div className="card-body">
-              <h1 className="card-title">OctoFit Tracker</h1>
-              <p className="lead">
-                Welcome to the OctoFit Tracker app for Mergington High School.
-                Log workouts, track teams, and follow leaderboard progress.
-              </p>
-              <div className="mb-4">
-                <h5>Backend API</h5>
-                <p className="mb-1">Base URL: <code>{apiBase}/api/</code></p>
-                <div className="list-group">
-                  <a href={`${apiBase}/api/users/`} className="list-group-item list-group-item-action" target="_blank" rel="noreferrer">
+    <BrowserRouter>
+      <div className="app-shell">
+        <nav className="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm mb-4">
+          <div className="container">
+            <NavLink className="navbar-brand" to="/">
+              OctoFit Tracker
+            </NavLink>
+            <button
+              className="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarNav"
+              aria-controls="navbarNav"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span className="navbar-toggler-icon" />
+            </button>
+            <div className="collapse navbar-collapse" id="navbarNav">
+              <ul className="navbar-nav ms-auto">
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/users">
                     Users
-                  </a>
-                  <a href={`${apiBase}/api/teams/`} className="list-group-item list-group-item-action" target="_blank" rel="noreferrer">
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/teams">
                     Teams
-                  </a>
-                  <a href={`${apiBase}/api/activities/`} className="list-group-item list-group-item-action" target="_blank" rel="noreferrer">
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/activities">
                     Activities
-                  </a>
-                  <a href={`${apiBase}/api/workouts/`} className="list-group-item list-group-item-action" target="_blank" rel="noreferrer">
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/workouts">
                     Workouts
-                  </a>
-                  <a href={`${apiBase}/api/leaderboard/`} className="list-group-item list-group-item-action" target="_blank" rel="noreferrer">
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/leaderboard">
                     Leaderboard
-                  </a>
-                </div>
-              </div>
-              <div>
-                <h5>Next steps</h5>
-                <ul>
-                  <li>Connect this frontend to the Django REST API.</li>
-                  <li>Build workout logging and leaderboard UI pages.</li>
-                  <li>Enable user registration and team management.</li>
-                </ul>
-              </div>
+                  </NavLink>
+                </li>
+              </ul>
             </div>
           </div>
-        </div>
+        </nav>
+        <main>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/users" element={<UsersPage />} />
+            <Route path="/teams" element={<TeamsPage />} />
+            <Route path="/activities" element={<ActivitiesPage />} />
+            <Route path="/workouts" element={<WorkoutsPage />} />
+            <Route path="/leaderboard" element={<LeaderboardPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </main>
       </div>
-    </div>
+    </BrowserRouter>
   );
 }
 
