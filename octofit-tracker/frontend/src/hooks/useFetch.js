@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { fetchJson } from '../api';
 
 export default function useFetch(path) {
@@ -6,27 +6,22 @@ export default function useFetch(path) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    let active = true;
+  const fetchData = useCallback(async () => {
     setLoading(true);
     setError(null);
-
-    fetchJson(path)
-      .then((result) => {
-        if (!active) return;
-        setData(result);
-        setLoading(false);
-      })
-      .catch((err) => {
-        if (!active) return;
-        setError(err.message);
-        setLoading(false);
-      });
-
-    return () => {
-      active = false;
-    };
+    try {
+      const result = await fetchJson(path);
+      setData(result);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   }, [path]);
 
-  return { data, loading, error };
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  return { data, loading, error, refetch: fetchData };
 }
